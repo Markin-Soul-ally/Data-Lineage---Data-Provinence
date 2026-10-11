@@ -104,22 +104,3 @@ streamlit run provlens-media-forensics.py
 Open `http://localhost:8501` in your browser.
 
 * *Tip:* Click **'Seed Case'** in the sidebar to populate a complete CCTV tampering scenario and explore the features immediately.
-
----
-
-## Free Cloud Deployment
-
-### 1\. Database: Neo4j AuraDB Free
-
-1. Create a free account at Neo4j AuraDB.
-2. Create an **AuraDB Free** instance (supports up to 200,000 nodes).
-3. Save your connection URI, user, and password.
-
-### 2\. Web App: Streamlit Community Cloud
-
-1. Push this repository to GitHub.
-2. Sign in to Streamlit Community Cloud with GitHub.
-3. Create a new app pointing to `provlens-media-forensics.py`.
-4. (Optional) In App Settings -&gt; Secrets, configure:  
-```  
-NEO4J_URI = "neo4j+s://
