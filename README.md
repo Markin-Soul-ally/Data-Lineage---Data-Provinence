@@ -1,32 +1,30 @@
-# Data-Lineage---Data-Provinence
+# ProvLens: Digital Media Provenance &amp; Forensics GraphRAG Platform
 
-# Digital Media Forensics GraphRAG
+Based on # Data-Lineage---Data-Provinence
 
-An auditable, graph-grounded digital media forensics web application powered by **Neo4j**, **GraphRAG**, and **W3C PROV** lineage modeling. The system reconstructs multi-stage media transformation pathways, detects tampering anomalies across high-dimensional containment hierarchies, and provides hallucination-free investigative intelligence for legal and judicial proceedings.
+**ProvLens** is an auditable, graph-grounded digital media forensics web platform powered by **Neo4j**, **GraphRAG**, and **W3C PROV** lineage modeling.
 
----
-
-## Table of Contents
-
-* [Key Features](#key-features)
-* [Architectural Foundations](#architectural-foundations)
-* [Repository Structure](#repository-structure)
-* [Quickstart (Local)](#quickstart-local)
-* [Free Cloud Deployment](#free-cloud-deployment)
-* [Graph Data Model &amp; Cypher Schema](#graph-data-model--cypher-schema)
-* [License &amp; Attributions](#license--attributions)
+The system tracks multi-stage media transformation pathways as association triplets `{i, T, o}`, detects tampering anomalies across high-dimensional containment hierarchies, and provides hallucination-free investigative intelligence for legal and judicial proceedings.
 
 ---
 
-## Key Features
+## Why ProvLens?
 
-* **Grounded GraphRAG Assistant:** Executes hybrid vector and Cypher traversals using Neo4j to retrieve deterministic, multi-hop subgraphs before LLM generation, eliminating hallucinations in forensic chain-of-custody analysis.
+* **Prov** (Provenance): Complete, immutable historical lifecycle tracking from hardware capture sensors to judicial court exhibits.
+* **Lens** (Forensic Lens): Multi-granular examination through Ibis containment hierarchies, allowing forensic examiners to zoom seamlessly from multi-gigabyte video containers down to individual suspicious frames.
+
+---
+
+## Key Capabilities
+
+* **Grounded GraphRAG Assistant:** Executes hybrid vector and Cypher traversals using Neo4j to retrieve deterministic, multi-hop subgraphs over W3C PROV and containment paths before prompting the LLM, eliminating hallucinations in forensic chain-of-custody analysis.
 * **Bidirectional Forensic Tracing:**  
   * **Backward Tracing (Root-Cause / 'Why-Provenance'):** Traverses upstream `:WAS_DERIVED_FROM` and `:USED` paths to identify original camera sensors, acquisition timestamps, and modifying software agents.
   * **Forward Tracing (Blast-Radius Analysis):** Tracks downstream outputs derived from compromised source frames to map error and tampering propagation across derivative publications.
 * **Multi-Granular Containment Hierarchy (Ibis Model):** Prevents graph explosion over massive multimedia assets by nesting parent `:MediaContainer` files down to `:MediaSegment` and `:MediaFrame` subsets.
-* **Vertical Judicial Alignment (JDFEG):** Seamlessly bridges low-level bitstream forensics (hashes, codecs, offsets) to high-level legal models (`:LogicalEvidence`, `:CaseExhibit`).
-* **Zero-Setup Simulation Mode:** Built-in in-memory fallback graph engine allows immediate local exploration and testing without requiring an active Neo4j connection upfront.
+* **Vertical Judicial Alignment (JDFEG):** Bridges low-level bitstream forensics (hashes, codecs, offsets) to high-level legal models (`:LogicalEvidence`, `:CaseExhibit`).
+* **Zero-Setup Simulation Fallback:** Built-in in-memory fallback graph engine allows immediate local exploration and testing without requiring an active Neo4j connection upfront.
+* **Auditable Evidence Certificate Export:** Generates formal, downloadable chain-of-custody reports for judicial proceedings.
 
 ---
 
@@ -42,13 +40,13 @@ An auditable, graph-grounded digital media forensics web application powered by 
                           +-----------^------------+
                                       | :IMPLEMENTS_LOGICAL
   +-----------------------------------+------------------------------------+
-  | Physical Lineage &amp; Containment (W3C PROV + Ibis Model)                 |
+  | Physical Lineage &amp; Containment (W3C PROV + Ibis Model)             |
   |                                                                        |
   |   (:MediaContainer:Entity)                                             |
   |              |                                                         |
   |              | :CONTAINS_DATA (Ibis Data Containment)                  |
   |              v                                                         |
-  |       (:MediaFrame:Entity) ----[:USED]----&gt; (:Transform:Activity)      |
+  |       (:MediaFrame:Entity) ----[:USED]----&gt; (:Transform:Activity)   |
   |              ^                                   |                     |
   |              | :WAS_DERIVED_FROM                 | :WAS_ASSOCIATED_WITH|
   |              |                                   v                     |
@@ -57,7 +55,7 @@ An auditable, graph-grounded digital media forensics web application powered by 
 
 ```
 
-1. **W3C PROV Standard &amp; Association Triplets {i, T, o}:**Every processing step is represented as an association triplet relating input entities i, transformation actors T, and output entities o, attributed to software or human agents.
+1. **W3C PROV Standard &amp; Association Triplets {i, T, o}:**Every processing step is represented as an association triplet relating input entities `i`, transformation actors `T`, and output entities `o`, attributed to software or human agents.
 2. **Ibis Multi-Layer Containment:**  
   * **Data Containment:** Enforces child data points (frames) as strict subsets of containing parent files (containers).
   * **Operator Containment:** Structures granular edit tasks under overarching job sessions.
@@ -69,11 +67,11 @@ An auditable, graph-grounded digital media forensics web application powered by 
 
 ```
 .
-├── app.py                  # Main Streamlit web application &amp; GraphRAG engine
-├── requirements.txt        # Python package dependencies
-├── README.md               # Architecture documentation &amp; setup guide
+├── provlens-media-forensics.py   # Main Streamlit web application &amp; GraphRAG engine
+├── requirements.txt              # Python package dependencies
+├── provlens-README.md            # Architecture documentation &amp; setup guide
 └── .streamlit/
-    └── secrets.toml        # (Optional) Neo4j and OpenAI API credentials
+    └── secrets.toml              # (Optional) Neo4j and OpenAI API credentials
 
 ```
 
@@ -89,7 +87,39 @@ An auditable, graph-grounded digital media forensics web application powered by 
 
 ### 2\. Installation
 
-Clone the repository and install the dependencies:
+Install the dependencies:
 
 ```
-git clone
+pip install streamlit neo4j openai
+
+```
+
+### 3\. Run Application
+
+```
+streamlit run provlens-media-forensics.py
+
+```
+
+Open `http://localhost:8501` in your browser.
+
+* *Tip:* Click **'Seed Case'** in the sidebar to populate a complete CCTV tampering scenario and explore the features immediately.
+
+---
+
+## Free Cloud Deployment
+
+### 1\. Database: Neo4j AuraDB Free
+
+1. Create a free account at Neo4j AuraDB.
+2. Create an **AuraDB Free** instance (supports up to 200,000 nodes).
+3. Save your connection URI, user, and password.
+
+### 2\. Web App: Streamlit Community Cloud
+
+1. Push this repository to GitHub.
+2. Sign in to Streamlit Community Cloud with GitHub.
+3. Create a new app pointing to `provlens-media-forensics.py`.
+4. (Optional) In App Settings -&gt; Secrets, configure:  
+```  
+NEO4J_URI = "neo4j+s://
